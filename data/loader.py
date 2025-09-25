@@ -53,8 +53,24 @@ def generate_dataset(num_samples=50):
     Returns:
         list[str]: Generated dataset lines
     """
-    executor = ExecutorAgent()
-    chat_gen = ChatGenerator(executor)
+def generate_dataset(num_samples=50, executor=None, chat_gen=None):
+    """
+    Generate synthetic dataset and save to file.
+    - Appends to existing file if present.
+    - Creates a new file if none exists.
+
+    Args:
+        num_samples (int): Number of samples to generate
+        executor (ExecutorAgent): An instance of ExecutorAgent.
+        chat_gen (ChatGenerator): An instance of ChatGenerator.
+
+    Returns:
+        list[str]: Generated dataset lines
+    """
+    if executor is None:
+        executor = ExecutorAgent()
+    if chat_gen is None:
+        chat_gen = ChatGenerator(executor)
     dataset = []
 
     for _ in range(num_samples):
