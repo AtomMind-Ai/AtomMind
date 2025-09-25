@@ -4,8 +4,9 @@ Standalone Dataset Generator for AtomMind Training
 - Appends new samples to datasets/dataset.txt if file exists
 """
 
-from data import loader  # your existing loader.py
 import argparse
+
+import data.loader
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate dataset for AtomMind training")
