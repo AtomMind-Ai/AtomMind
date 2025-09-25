@@ -13,7 +13,7 @@ from models.oam import OptimizationAlgorithmModule
 from models.cen import ChatExpertNetwork
 from config import (
     HIDDEN_SIZE, NUM_ATTENTION_HEADS,
-    DEN_LAYERS, GKB_LAYERS, SRM_LAYERS, OAM_LAYERS, DOMAINS
+    DEN_LAYERS, CEN_LAYERS, GKB_LAYERS, SRM_LAYERS, OAM_LAYERS, DOMAINS
 )
 
 
