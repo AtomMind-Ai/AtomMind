@@ -60,6 +60,10 @@ for epoch in range(FINE_TUNE_EPOCHS):
         MAX_GRAD_NORM = plan["grad_clip"]
         logger.log(f"[Controller] Adjusted gradient clip -> {MAX_GRAD_NORM}")
 
+    # Initialize accumulators for average epoch loss
+    epoch_loss_total = 0.0
+    num_batches = 0
+
     # Generate fine-tuning samples
     chat_samples = chat_gen.generate(num_candidates=1)
     for sample in chat_samples:
@@ -88,6 +92,10 @@ for epoch in range(FINE_TUNE_EPOCHS):
 
         memory.store_batch(encoded.detach())
         logger.log(f"[Fine-tune] Loss: {loss.item():.4f}")
+
+        # Accumulate loss for epoch average
+        epoch_loss_total += loss.item()
+        num_batches += 1
 
         # -------------------- Batch-level Controller --------------------
         batch_feedback = controller.control_stage(
@@ -125,10 +133,13 @@ for epoch in range(FINE_TUNE_EPOCHS):
                     logger.log(f"[Controller] Unfroze module: {module_name}")
 
     # -------------------- Epoch-level Controller --------------------
+    avg_epoch_loss = epoch_loss_total / max(num_batches, 1)  # avoid division by zero
     feedback = controller.control_stage(
         stage="epoch_end",
-        context={"loss": loss.item(), "epoch": epoch+1},
+        context={"loss": avg_epoch_loss, "epoch": epoch+1},
     )
+    logger.log(f"[Epoch {epoch+1}] Average Loss: {avg_epoch_loss:.4f}")
+
     logger.log("[Controller Feedback]")
     for key, value in feedback.items():
         logger.log(f"  - {key}: {value}")
