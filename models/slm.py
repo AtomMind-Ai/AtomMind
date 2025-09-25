@@ -1,5 +1,5 @@
 """
-Defines SmallScientificLLM, a transformer-based model that integrates domain expert
+Defines SmallLanguageModel, a transformer-based model that integrates domain expert
 networks, a general knowledge backbone, symbolic reasoning, optimization, and chat expert modules.
 """
 
@@ -13,11 +13,11 @@ from models.oam import OptimizationAlgorithmModule
 from models.cen import ChatExpertNetwork
 from config import (
     HIDDEN_SIZE, NUM_ATTENTION_HEADS,
-    DEN_LAYERS, GKB_LAYERS, SRM_LAYERS, OAM_LAYERS, DOMAINS
+    DEN_LAYERS, CEN_LAYERS, GKB_LAYERS, SRM_LAYERS, OAM_LAYERS, DOMAINS
 )
 
 
-class SmallScientificLLM(nn.Module):
+class SmallLanguageModel(nn.Module):
     """
     SmallScientificLLM integrates multiple modules for processing scientific text.
 
@@ -42,7 +42,7 @@ class SmallScientificLLM(nn.Module):
         self.gkb = GeneralKnowledgeBackbone(HIDDEN_SIZE, GKB_LAYERS, NUM_ATTENTION_HEADS)
         self.srm = SymbolicReasoningModule(HIDDEN_SIZE, SRM_LAYERS, NUM_ATTENTION_HEADS)
         self.oam = OptimizationAlgorithmModule(HIDDEN_SIZE, OAM_LAYERS, NUM_ATTENTION_HEADS)
-        self.cen = ChatExpertNetwork()
+        self.cen = ChatExpertNetwork(HIDDEN_SIZE, CEN_LAYERS, NUM_ATTENTION_HEADS)
         self.output_layer = nn.Linear(HIDDEN_SIZE, HIDDEN_SIZE)
 
     def forward(self, x_dict: Dict[str, Tensor], chat_tensor: Optional[Tensor] = None) -> Tensor:
