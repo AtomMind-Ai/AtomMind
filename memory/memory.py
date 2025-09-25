@@ -62,7 +62,7 @@ class AssociativeNet(nn.Module):
         """Store one vector into a slot (Hebbian-inspired update)."""
         self.store_batch(vector.unsqueeze(0))
 
-    def store_batch(self, vectors: torch.Tensor):
+    def store_batch(self, vectors: torch.Tensor, eviction_threshold: int = 1000):
         """Batch Hebbian-inspired update with usage tracking.
         Args:
             vectors: [B, H]
@@ -76,7 +76,7 @@ class AssociativeNet(nn.Module):
 
             for b, idx in enumerate(slot_idx.tolist()):
                 # Evict least-used if this slot is overused
-                if self.usage[idx] > 1000:
+                if self.usage[idx] > self.eviction_threshold:
                     idx = torch.argmin(self.usage).item()
                     self.weights[idx].zero_()
                     self.usage[idx] = 0.0
