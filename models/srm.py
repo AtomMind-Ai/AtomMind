@@ -23,12 +23,7 @@ class SymbolicReasoningModule(nn.Module):
         Initialize the SymbolicReasoningModule.
         """
         super().__init__()
-        encoder_layer = nn.TransformerEncoderLayer(
-            d_model=hidden_size,
-            nhead=num_heads,
-            batch_first=True
-        )
-        self.transformer = nn.TransformerEncoder(encoder_layer, num_layers=num_layers)
+        self.transformer = TransformerBlock(hidden_size, num_heads, num_layers)
 
     def forward(self, x: Tensor) -> Tensor:
         """
