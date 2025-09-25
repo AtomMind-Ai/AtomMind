@@ -69,10 +69,12 @@ class ControllerAgent:
         )
 
         # Try to parse JSON-like response
+        # Try to parse JSON-like response
         try:
-            parsed = eval(results[0])
+            import json
+            parsed = json.loads(results[0])
             if isinstance(parsed, dict):
                 return parsed
             return {"feedback": str(results[0]), "adjustments": {}}
-        except Exception:
+        except (json.JSONDecodeError, TypeError):
             return {"feedback": results[0], "adjustments": {}}
