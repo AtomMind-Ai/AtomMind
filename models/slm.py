@@ -42,7 +42,7 @@ class SmallScientificLLM(nn.Module):
         self.gkb = GeneralKnowledgeBackbone(HIDDEN_SIZE, GKB_LAYERS, NUM_ATTENTION_HEADS)
         self.srm = SymbolicReasoningModule(HIDDEN_SIZE, SRM_LAYERS, NUM_ATTENTION_HEADS)
         self.oam = OptimizationAlgorithmModule(HIDDEN_SIZE, OAM_LAYERS, NUM_ATTENTION_HEADS)
-        self.cen = ChatExpertNetwork()
+        self.cen = ChatExpertNetwork(HIDDEN_SIZE, CEN_LAYERS, NUM_ATTENTION_HEADS)
         self.output_layer = nn.Linear(HIDDEN_SIZE, HIDDEN_SIZE)
 
     def forward(self, x_dict: Dict[str, Tensor], chat_tensor: Optional[Tensor] = None) -> Tensor:
