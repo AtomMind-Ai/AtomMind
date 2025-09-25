@@ -1,5 +1,7 @@
 """Defines a reusable Transformer block for sequence processing."""
 
+import math
+import torch
 from torch import nn, Tensor
 
 class TransformerBlock(nn.Module):
@@ -67,8 +69,28 @@ class TransformerBlock(nn.Module):
 
     @staticmethod
     def _build_positional_encoding(hidden_size: int, max_len: int = 5000) -> Tensor:
-        import math, torch
-
+        """
+        Generate sinusoidal positional encodings for a sequence.
+    
+        Positional encodings provide information about the position of tokens 
+        in a sequence, allowing transformer models to incorporate the order of 
+        elements without using recurrent networks.
+    
+        The encoding is computed using sine and cosine functions of different 
+        frequencies:
+    
+            PE(pos, 2i)   = sin(pos / (10000^(2i/hidden_size)))
+            PE(pos, 2i+1) = cos(pos / (10000^(2i/hidden_size)))
+    
+        Args:
+            hidden_size (int): The dimensionality of the embeddings.
+            max_len (int, optional): Maximum sequence length for which to compute 
+                positional encodings. Default is 5000.
+    
+        Returns:
+            Tensor: A tensor of shape [1, max_len, hidden_size] containing the 
+                positional encodings, ready to be added to input embeddings.
+        """
         pe = torch.zeros(max_len, hidden_size)
         position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
         div_term = torch.exp(
