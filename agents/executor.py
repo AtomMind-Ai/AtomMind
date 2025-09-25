@@ -23,6 +23,7 @@ class ExecutorAgent:
 
     def generate_candidates(
         self,
+        model: str = "x-ai/grok-4-fast:free", # Can change with your model
         prompt: str,
         num_candidates: int = 3,
         system_prompt: str = "You are a helpful assistant.",
@@ -48,7 +49,7 @@ class ExecutorAgent:
             {"role": "user", "content": prompt},
         ]
         params = {
-            "model": "x-ai/grok-4-fast:free",
+            "model": model,
             "messages": messages,
             "temperature": temperature,
             "max_tokens": max_tokens,
