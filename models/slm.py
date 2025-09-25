@@ -1,5 +1,5 @@
 """
-Defines SmallScientificLLM, a transformer-based model that integrates domain expert
+Defines SmallLanguageModel, a transformer-based model that integrates domain expert
 networks, a general knowledge backbone, symbolic reasoning, optimization, and chat expert modules.
 """
 
@@ -17,7 +17,7 @@ from config import (
 )
 
 
-class SmallScientificLLM(nn.Module):
+class SmallLanguageModel(nn.Module):
     """
     SmallScientificLLM integrates multiple modules for processing scientific text.
 
